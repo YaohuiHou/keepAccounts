@@ -1,0 +1,40 @@
+
+	<view class="container">
+		<view class="user">
+			<view class="userinfo" bindtap="handleViewTap">
+				<image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>
+				<view class="userinfo-nickname">{{ userInfo.nickName }}</view>
+			</view>
+			<view class="numinfo">
+				<block  wx:for-items="{{numlist}}" wx:for-index="index" wx:for-item="item" wx:key="id">
+				<view class="num">
+					<text>{{item.num}}</text>
+					<text>{{item.name}}</text>
+				</view>
+				</block>
+			</view>
+		</view>
+		
+  <view class="panel">
+    
+			
+    <view class="wepy-list">
+        <block  wx:for-items="{{$list$list}}" wx:for-index="index" wx:for-item="item" wx:key="id">
+            <view bindtap="$list$tap" class="mylist">
+                <text class="family">{{item.id}}</text>
+                <text class="itemtitle">{{item.title}}</text>
+            </view>
+        </block>
+    </view>
+
+		
+  </view>
+
+		
+  <view class="panel">
+    
+			<button class="sharebtn" loading="{{loadingShow}}" open-type="share">分享给你的小伙伴~ </button>
+		
+  </view>
+
+  </view>

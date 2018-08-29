@@ -1,0 +1,24 @@
+@import "./../components/addexample.wxss";
+.nav {
+  width: 100%;
+  height: 100rpx;
+  display: flex;
+  flex-direction: row;
+  background-color: #3ebba3;
+}
+.default {
+  line-height: 100rpx;
+  text-align: center;
+  flex: 1;
+  color: #000;
+  font-weight: bold;
+  font-size: 28rpx;
+}
+.green {
+  line-height: 100rpx;
+  text-align: center;
+  color: #fff;
+  flex: 1;
+  font-weight: bold;
+  font-size: 28rpx;
+}

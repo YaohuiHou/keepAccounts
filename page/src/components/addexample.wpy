@@ -1,0 +1,231 @@
+
+<template>
+    <view >
+        <view class="billinfo">
+            <text class="billtitle">花费金额</text>
+            <view class="input">
+                <input type="digit" placeholder="" value="{{money}}" bindinput="Input"/>
+            </view>
+        </view>
+        <view class="billinfo">
+            <text class="billtitle">花费类型</text>
+            <view class="mylist">
+                <block wx:for-items="{{classification}}" wx:for-index="index" wx:for-item="item" wx:key="id">
+                    <view class="items" @tap="changebackground({{index}})">
+                        <text class="{{item.selected?'nochange':'itemicon'}}">{{item.name[0]}}</text>
+                        <text class="itemname">{{item.name}}</text>
+                    </view>
+                </block>
+            </view>
+        </view>
+        <view class="billinfo">
+            <text class="billtitle">选择时间</text>
+            <picker mode="date" value="{{currenttime}}" start="{{currenttime}}"  bindchange="bindDateChange">
+                <view class="input">
+                {{currenttime}}
+                </view>
+            </picker>
+        </view>
+            <view class="billinfo">
+            <button class="savebtn" @tap="sure">记一笔 </button>
+        </view>
+    </view>
+</template>
+
+<script>
+  import * as d3TimeFormat from 'd3-time-format'
+  import wepy from 'wepy'
+
+  export default class Myinfo extends wepy.page {
+    data = {
+       
+    }
+    props = {
+        classification:{
+            twoWay:true
+        },
+        currenttime:{
+            
+        },
+        money:{},
+        classify:{}
+    };
+    methods = {
+         bindDateChange(e) {
+            this.currenttime = e.detail.value
+            this.$emit('childFn', this.currenttime)
+        },
+        changebackground(index){
+            this.classification.forEach((e,i) => {
+                if(i == index){
+                     e.selected = true
+                }else{
+                     e.selected = false
+                } 
+            });
+            this.classifyname = this.classification[index].name 
+            this.classifyid = this.classification[index].id
+            this.classifytype = this.classification[index].type
+        },
+        Input(e){
+            this.money = e.detail.value
+        },
+        //添加数据库
+        sure(){
+            var time = d3TimeFormat.timeFormat('%Y-%m-%d')
+            var id = 'DB-BILL-'+ time(new Date()); 
+            if(this.money == undefined||this.classifytype == undefined){
+                wx.showModal({
+                    title: '提示',
+                    content: '请将信息填写完整',
+                    showCancel:false,
+                    confirmText:'我知道了',
+                    confirmColor:'#3ebba3'
+                })
+            }else{
+                wx.request({
+                    url: this.$parent.$parent.globalData.requestDomain+'/bills/addBill', //仅为示例，并非真实的接口地址
+                    data: {
+                        hashid: this.classifyid ,
+                        user: this.$parent.$parent.globalData.userInfo ,
+                        money: this.money,
+                        val:this.classifyname,
+                        time:this.currenttime,
+                        type:this.classifytype
+                    },
+                    header: {
+                        'content-type': 'application/json' // 默认值
+                    },
+                    success: function(res) {
+                        wx.switchTab({
+                            url: '/pages/details'
+                        })
+                    }
+                })
+            }
+        }
+    }
+    onShow(){
+       
+        console.log(this.$parent.$parent.globalData)
+    }
+    
+  }
+</script>
+<style lang="less">
+.nav{
+    width:100%;
+    height:100rpx;
+    display:flex;
+    flex-direction:row;
+    background-color: #3ebba3;
+}
+.default{
+    line-height:100rpx;
+    text-align:center;
+    flex:1;
+    color:#000;
+    font-weight:bold;
+    font-size:28rpx;
+}
+.green{
+    line-height:100rpx;
+    text-align:center;
+    color:#fff;
+    flex:1;
+    font-weight:bold;
+    font-size:28rpx;
+}
+.show{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    flex-wrap:wrap;
+    align-content:center;
+    box-sizing: border-box;
+    padding: 40rpx 40rpx;
+    .billinfo{
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: column;
+        .savebtn{
+            width: 80%;
+            height: 30px;
+            color:#3ebba3;
+            font-size: 14px;
+            line-height: 30px;
+            background: transparent;
+            border: 1px solid #3ebba3;
+            border-radius: 16px;
+            margin-top: 80rpx;
+        }
+        .billtitle{
+            font-size: 34rpx;
+            &:before {
+                content: '';
+                display: inline-block;
+                width: 2px;
+                height: 14px;
+                background-color: #3ebba3;
+                margin-right: 4px;
+                vertical-align: middle;
+            }
+        }
+        .input{
+            margin: 10px;
+            border-bottom: 1px solid #eee;         
+            &:focus {
+                outline: #2be4adcc;
+                box-shadow: 0px 0px 5px 1px rgba(43, 228, 173, 0.8);
+            }
+        }
+        .mylist{
+            width: 100%;
+            max-height: 360rpx;
+            overflow: auto;
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: flex-start;
+            flex-wrap:wrap;
+            text-align: center;
+            .items{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 20vw;
+                padding-top: 20rpx; 
+                padding-bottom: 20rpx; 
+                .itemicon{
+                    height: 90rpx;
+                    width: 90rpx;
+                    line-height: 90rpx;
+                    background-color: #eee;
+                    color: #333;
+                    font-family: dogbooks;
+                    font-size: 60rpx;
+                    border-radius: 50%;
+                }
+                .nochange{
+                    height: 90rpx;
+                    width: 90rpx;
+                    line-height: 90rpx;
+                    background-color: #3ebba3;
+                    color: #333;
+                    font-family: dogbooks;
+                    font-size: 70rpx;
+                    border-radius: 50%;
+                }
+                .itemname{
+                    font-size: 28rpx;
+                    padding-top: 10rpx;
+                }
+            } 
+        }
+    }
+}
+.hidden{
+    display:none;
+}
+</style>

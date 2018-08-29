@@ -1,0 +1,104 @@
+
+<template>
+  <view class="container">
+        <view class="nav">
+            <view class="{{selected?'green':'default'}}" @tap="selected">支出</view>
+            <view class="{{selected1?'green':'default'}}" @tap="selected1">收入</view>
+        </view>
+        <view class="{{selected?'show':'hidden'}}">
+            <outmoney 
+                :classification.sync = "outclassification" 
+                :currenttime.sync = "currenttime"
+                :money = "money"
+            ></outmoney>
+        </view>
+        <view class="{{selected1?'show':'hidden'}}">
+            <inmoney 
+                :classification.sync = "inclassification" 
+                :currenttime.sync = "currenttime"
+            ></inmoney>
+        </view>
+
+  </view>
+</template>
+
+<script>
+  import * as d3TimeFormat from 'd3-time-format'
+  import wepy from 'wepy'
+  import Addexample from '@/components/addexample' 
+
+  export default class Myinfo extends wepy.page {
+    config = {
+      navigationBarTitleText: '记一笔'
+    }
+    components = {
+        outmoney: Addexample,
+        inmoney: Addexample
+    };
+    data = {
+        selected:true,
+        selected1:false,
+        outclassification:[],
+        inclassification:[],
+        currenttime:null,
+        money:0
+    }
+    methods = {
+        selected(e){
+            this.selected1=false,
+            this.selected=true
+        },
+        selected1(e){
+            this.selected=false,
+            this.selected1=true
+        }
+    }
+
+    onLoad() {
+        var time = d3TimeFormat.timeFormat('%Y-%m-%d')
+        this.currenttime = time(new Date())
+        wx.request({
+			url: this.$parent.globalData.requestDomain+'/bills/listSort', //仅为示例，并非真实的接口地址
+			header: {
+				'content-type': 'application/json' // 默认值
+			},
+			success: (res) => {
+                res.data.data.forEach(ele => {
+                    if(ele.type == "1"){
+                        this.inclassification.unshift(ele)
+                    }else{
+                        this.outclassification.unshift(ele)
+                    }
+                });
+				this.$apply()
+			}
+		})
+    }
+  }
+</script>
+<style lang="less">
+.nav{
+    width:100%;
+    height:100rpx;
+    display:flex;
+    flex-direction:row;
+    background-color: #3ebba3;
+}
+.default{
+    line-height:100rpx;
+    text-align:center;
+    flex:1;
+    color:#000;
+    font-weight:bold;
+    font-size:28rpx;
+}
+.green{
+    line-height:100rpx;
+    text-align:center;
+    color:#fff;
+    flex:1;
+    font-weight:bold;
+    font-size:28rpx;
+}
+
+</style>

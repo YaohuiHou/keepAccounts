@@ -1,0 +1,146 @@
+<style lang="less">
+	.user{
+		width:100%;
+		background-color: #3ebba3;
+		.userinfo {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: flex-start;
+			padding-top:20px;
+			.userinfo-avatar {
+				width: 80rpx;
+				height: 80rpx;
+				border-radius: 50%;
+				padding:0 20px; 
+			}
+			.userinfo-nickname {
+				color: #fff;
+			}
+		}
+		.numinfo{
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-around;
+			margin:20px;
+			.num{
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				color: #fff;
+				font-size: 12px;
+			}
+		}
+	} 
+	.sharebtn{
+		width: 80%;
+		height: 30px;
+		color:#3ebba3;
+		font-size: 14px;
+		line-height: 30px;
+		background: transparent;
+		border: 1px solid #3ebba3;
+		border-radius: 16px;
+	}
+</style>
+<template>
+	<view class="container">
+		<view class="user">
+			<view class="userinfo" @tap="handleViewTap">
+				<image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>
+				<view class="userinfo-nickname">{{ userInfo.nickName }}</view>
+			</view>
+			<view class="numinfo">
+				<block wx:for-items="{{numlist}}" wx:for-index="index" wx:for-item="item" wx:key="id">
+				<view  class="num">
+					<text>{{item.num}}</text>
+					<text>{{item.name}}</text>
+				</view>
+				</block>
+			</view>
+		</view>
+		<panel>
+			<list :list="list" ></list>
+		</panel>
+		<panel>
+			<button class="sharebtn" loading="{{loadingShow}}" open-type="share">分享给你的小伙伴~ </button>
+		</panel>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Panel from '@/components/panel' // alias example
+  import List from '@/components/wepy-list' // alias example
+
+  export default class Myinfo extends wepy.page {
+    config = {
+      navigationBarTitleText: '狗子账单'
+    }
+    components = {
+	  panel: Panel,
+	  list: List
+    }
+
+    data = {
+      mynum: 20,
+      userInfo: {
+        nickName: '加载中...'
+      },
+      normalTitle: '首页',
+      setTimeoutTitle: '我的',
+      count: 0,
+	  netrst: '',
+	  numlist:[],
+	  list: [
+        {
+          id: '叶',
+          title: '收支分类'
+		},
+		{
+          id: '星',
+          title: '联系我们'
+		},
+		{
+          id: '联',
+          title: '意见反馈'
+        }
+	  ],
+	  loadingShow:false,
+    }
+
+    computed = {
+      now () {
+        return +new Date()
+      }
+    }
+
+    methods = {
+     
+    }
+    onShow() {
+			this.userInfo = this.$parent.globalData.userInfo
+			wx.request({
+				url: this.$parent.globalData.requestDomain+'/bills/currentYear', //仅为示例，并非真实的接口地址
+				header: {
+					'content-type': 'application/json' // 默认值
+				},
+				success: (res) => {
+					this.numlist = res.data.data
+					this.$apply()
+				}
+			})
+		}
+	onShareAppMessage(res) {
+        if (res.from === 'button') {
+            // 来自页面内转发按钮
+            console.log(res.target,this.$parent.globalData.userInfo)
+        }
+        return {
+            title: '生活从点滴开始~~',
+            path: '/page/user?id=111'
+        }
+	}
+  }
+</script>

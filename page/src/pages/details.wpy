@@ -1,0 +1,257 @@
+
+<template>
+  <view class="container">
+    <view class="header">
+      <view class="timer">
+        <view class="date">
+          <text class="years">{{currenttime[0]}}年</text>
+          <picker mode="date" value="{{currenttime}}"   bindchange="bindDateChange">
+              <text class="month">
+                <text>{{currenttime[1]}}</text>月
+              </text>
+          </picker>
+        </view>
+      </view>
+      <!-- 收支 -->
+      <view class="payments">
+        <view class="left">
+          <text class="title">收入</text>
+          <text class="price">{{listContent.income?'+'+listContent.income:0}}</text>
+        </view>
+        <view class="right">
+          <text class="title">支出</text>
+          <text class="price">{{listContent.pay?'-'+listContent.pay:0}}</text>
+        </view>
+      </view>
+    </view>
+    <!-- 列表 -->
+    <view class="ul">
+      <view class="li">
+        <block wx:for-items="{{listContent.list}}" wx:for-index="index" wx:for-item="item" wx:key="id">
+        <view class="head">
+          <text>{{item.time}}</text>
+          <view class="right">
+            <text>收入：{{item.income?'+'+item.income:0}}</text>
+            <text>支出：{{item.pay?'-'+item.pay:0}}</text>
+          </view>
+        </view>
+         <block wx:for-items="{{item.list}}" wx:for-index="index" wx:for-item="ele" wx:key="id">
+          <view class="order">
+            <view class="em family">{{ele.val[0]}}</view>
+            <view class="info">
+              <text>{{ele.val}}</text>
+              <text>{{ele.type==0?'-'+ele.money:'+'+ele.money}}</text>
+            </view>
+          </view>
+         </block>
+        </block>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+
+  import * as d3TimeFormat from 'd3-time-format'
+  import wepy from 'wepy'
+  import Panel from '@/components/panel' 
+
+  export default class Myinfo extends wepy.page {
+    config = {
+      navigationBarTitleText: '明细'
+    }
+    components = {
+      panel: Panel
+    }
+
+    data = {
+      mynum: 20,
+      userInfo: {
+        nickName: '加载中...'
+      },
+      normalTitle: '首页',
+      setTimeoutTitle: '我的',
+      count: 0,
+      netrst: '',
+	  currenttime:null,
+	  listContent:null,
+	  dateinfo:[],
+	  monthMoney:null
+    }
+
+    computed = {
+      list(){
+		  
+	  }
+    }
+
+    methods = {
+		//本月消费总额
+      monthMoneyInfo:(date)=>{
+        wx.request({
+          url: this.$parent.globalData.requestDomain+'/bills/listBill', //仅为示例，并非真实的接口地址
+          header: {
+            'content-type': 'application/json' // 默认值
+          },
+          data:{
+            datemonth:date[0]+'-'+date[1]
+          },
+          success: (res) => {
+            this.listContent =  res.data.data
+            this.$apply()
+          }
+        })
+        
+      },
+		//查看每月消费情况
+       bindDateChange(e) {
+          this.currenttime = e.detail.value.split("-")	
+          this.methods.monthMoneyInfo(this.currenttime)
+      }
+    }
+
+     onShow() {
+        var time = d3TimeFormat.timeFormat('%Y-%m-%d')
+        this.currenttime = time(new Date()).split("-")
+        this.methods.monthMoneyInfo(this.currenttime)
+    }
+  }
+</script>
+<style lang="less">
+  .container{
+	  position: relative;
+	  height: 100%;
+    .header{
+	  position: fixed;
+	  left: 0;
+	  top: 0;
+      display: flex;
+      background-color: #18bc9c;
+      flex-direction: row;
+      height: 120rpx;
+      padding: 10rpx 20rpx;
+      width: 100%;
+      box-sizing: border-box;
+      .date{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 200rpx;
+        height: 100rpx;
+        position: relative;
+        &:after{
+          content: "";
+          position: absolute;
+          right: 50rpx;
+          bottom: 10rpx;
+          width: 1px;
+          height: 60rpx;
+          background-color: #333;
+        }
+        .years{
+          color: #333131;
+          font-size: 24rpx;
+          line-height: 32rpx;
+        }
+        .month{
+          font-size: 24rpx;
+          line-height: 40rpx;
+          color: #333;
+          display: flex;
+          text{
+            font-size: 32rpx;
+          }
+          &:after{
+            content: "";
+            display: block;
+            border: 20rpx solid transparent;
+            border-top: 24rpx solid #333;
+            margin: 10rpx 0 0 20rpx;
+          }
+        }
+      }
+      .payments{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        height: 100rpx;
+        width: 100%;
+        flex-grow: 1;
+        >view{
+          flex: 1;
+          display: flex;
+          justify-content: space-between;
+          flex-direction: column;
+          height: 100rpx;
+          .title{
+            color: #333131;
+            font-size: 24rpx;
+            line-height: 32rpx;
+
+          }
+          .price{
+            font-size: 32rpx;
+            line-height: 40rpx;
+            color: #333;
+          }
+        }
+      }
+    }
+    .ul{
+      width: 100%;
+	  display: flex;
+	  padding-top: 118rpx;
+      .li{
+        width: 100%;
+        .head{
+          padding: 0 30rpx;
+          height: 80rpx;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          border-bottom: 1px solid #eee;
+          text{
+            font-size: 24rpx;
+            color: #666;
+          }
+          .right text{
+            margin-left: 20rpx;
+          }
+        }
+        .order{
+          padding: 0 30rpx;
+          display: flex;
+          flex-direction: row;
+          height: 120rpx;
+          line-height: 120rpx;
+          align-items: center;
+           &:last-child{
+             .info{
+                border: none;
+             }
+            }
+          .em{
+            width: 80rpx;
+			height: 80rpx;
+			line-height: 80rpx;
+            border-radius: 50%;
+            display: block;
+            background-color: #eee;
+            margin-right: 20rpx;
+          }
+          .info{
+            display: flex;
+            justify-content: space-between;
+            flex-direction: row;
+            align-items: center;
+            flex-grow: 1;
+            color: #333;
+            font-size: 28rpx;
+            border-bottom: 1px solid #eee;
+          }
+        }
+      }
+    }
+  }
+</style>

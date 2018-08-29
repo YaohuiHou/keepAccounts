@@ -1,0 +1,20 @@
+.family {
+  font-family: 'dogbooks';
+  color: #3ebba3;
+  font-size: 22px;
+  text-align: center;
+}
+@font-face {
+  font-family: 'dogbooks';
+  /* project id 716847 */
+  src: url('//at.alicdn.com/t/font_716847_i3i3z84up3h.eot');
+  src: url('//at.alicdn.com/t/font_716847_i3i3z84up3h.eot?#iefix') format('embedded-opentype'), url('//at.alicdn.com/t/font_716847_i3i3z84up3h.woff') format('woff'), url('//at.alicdn.com/t/font_716847_i3i3z84up3h.ttf') format('truetype'), url('//at.alicdn.com/t/font_716847_i3i3z84up3h.svg#iconfont') format('svg');
+}
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}

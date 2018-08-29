@@ -1,0 +1,34 @@
+<style lang="less">
+  .panel {
+    width: 100%;
+    text-align: left;
+    font-size: 12px;
+    box-sizing: border-box;
+    padding: 20rpx 50rpx;
+
+ 
+    .info {
+      padding: 15rpx;
+    }
+    .testcounter {
+      margin-top: 15rpx;
+      position: absolute;
+    }
+    .counterview {
+      margin-left: 120rpx;
+    }
+  }
+</style>
+<template>
+  <view class="panel">
+    <slot>
+    </slot>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class Panel extends wepy.component {
+
+  }
+</script>

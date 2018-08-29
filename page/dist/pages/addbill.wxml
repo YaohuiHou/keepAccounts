@@ -1,0 +1,76 @@
+
+  <view class="container">
+        <view class="nav">
+            <view class="{{selected?'green':'default'}}" bindtap="selected">支出</view>
+            <view class="{{selected1?'green':'default'}}" bindtap="selected1">收入</view>
+        </view>
+        <view class="{{selected?'show':'hidden'}}">
+            
+    <view>
+        <view class="billinfo">
+            <text class="billtitle">花费金额</text>
+            <view class="input">
+                <input type="digit" placeholder="" value="{{$outmoney$money}}" bindinput="$outmoney$Input"/>
+            </view>
+        </view>
+        <view class="billinfo">
+            <text class="billtitle">花费类型</text>
+            <view class="mylist">
+                <block  wx:for-items="{{$outmoney$classification}}" wx:for-index="index" wx:for-item="item" wx:key="id">
+                    <view class="items" bindtap="$outmoney$changebackground" data-wpychangebackground-a="{{index}}">
+                        <text class="{{item.selected?'nochange':'itemicon'}}">{{item.name[0]}}</text>
+                        <text class="itemname">{{item.name}}</text>
+                    </view>
+                </block>
+            </view>
+        </view>
+        <view class="billinfo">
+            <text class="billtitle">选择时间</text>
+            <picker mode="date" value="{{$outmoney$currenttime}}" start="{{$outmoney$currenttime}}" bindchange="$outmoney$bindDateChange">
+                <view class="input">
+                {{$outmoney$currenttime}}
+                </view>
+            </picker>
+        </view>
+            <view class="billinfo">
+            <button class="savebtn" bindtap="$outmoney$sure">记一笔 </button>
+        </view>
+    </view>
+
+        </view>
+        <view class="{{selected1?'show':'hidden'}}">
+            
+    <view>
+        <view class="billinfo">
+            <text class="billtitle">花费金额</text>
+            <view class="input">
+                <input type="digit" placeholder="" value="{{$inmoney$money}}" bindinput="$inmoney$Input"/>
+            </view>
+        </view>
+        <view class="billinfo">
+            <text class="billtitle">花费类型</text>
+            <view class="mylist">
+                <block  wx:for-items="{{$inmoney$classification}}" wx:for-index="index" wx:for-item="item" wx:key="id">
+                    <view class="items" bindtap="$inmoney$changebackground" data-wpychangebackground-a="{{index}}">
+                        <text class="{{item.selected?'nochange':'itemicon'}}">{{item.name[0]}}</text>
+                        <text class="itemname">{{item.name}}</text>
+                    </view>
+                </block>
+            </view>
+        </view>
+        <view class="billinfo">
+            <text class="billtitle">选择时间</text>
+            <picker mode="date" value="{{$inmoney$currenttime}}" start="{{$inmoney$currenttime}}" bindchange="$inmoney$bindDateChange">
+                <view class="input">
+                {{$inmoney$currenttime}}
+                </view>
+            </picker>
+        </view>
+            <view class="billinfo">
+            <button class="savebtn" bindtap="$inmoney$sure">记一笔 </button>
+        </view>
+    </view>
+
+        </view>
+
+  </view>

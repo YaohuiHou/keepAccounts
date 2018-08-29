@@ -1,0 +1,15 @@
+{
+	"description": "‘狗子的小本本’",
+	"setting": {
+		"urlCheck": false,
+		"es6": false,
+		"postcss": false,
+		"minified": false,
+		"newFeature": true
+	},
+	"compileType": "miniprogram",
+	"appid": "wxe73aa026c406cd8e",
+	"projectname": "%E8%AE%B0%E8%B4%A6",
+	"miniprogramRoot": "./dist",
+	"condition": {}
+}

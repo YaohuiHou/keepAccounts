@@ -1,0 +1,134 @@
+@import "./../components/panel.wxss";
+.container {
+  position: relative;
+  height: 100%;
+}
+.container .header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  background-color: #18bc9c;
+  flex-direction: row;
+  height: 120rpx;
+  padding: 10rpx 20rpx;
+  width: 100%;
+  box-sizing: border-box;
+}
+.container .header .date {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 200rpx;
+  height: 100rpx;
+  position: relative;
+}
+.container .header .date:after {
+  content: "";
+  position: absolute;
+  right: 50rpx;
+  bottom: 10rpx;
+  width: 1px;
+  height: 60rpx;
+  background-color: #333;
+}
+.container .header .date .years {
+  color: #333131;
+  font-size: 24rpx;
+  line-height: 32rpx;
+}
+.container .header .date .month {
+  font-size: 24rpx;
+  line-height: 40rpx;
+  color: #333;
+  display: flex;
+}
+.container .header .date .month text {
+  font-size: 32rpx;
+}
+.container .header .date .month:after {
+  content: "";
+  display: block;
+  border: 20rpx solid transparent;
+  border-top: 24rpx solid #333;
+  margin: 10rpx 0 0 20rpx;
+}
+.container .header .payments {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 100rpx;
+  width: 100%;
+  flex-grow: 1;
+}
+.container .header .payments > view {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  height: 100rpx;
+}
+.container .header .payments > view .title {
+  color: #333131;
+  font-size: 24rpx;
+  line-height: 32rpx;
+}
+.container .header .payments > view .price {
+  font-size: 32rpx;
+  line-height: 40rpx;
+  color: #333;
+}
+.container .ul {
+  width: 100%;
+  display: flex;
+  padding-top: 118rpx;
+}
+.container .ul .li {
+  width: 100%;
+}
+.container .ul .li .head {
+  padding: 0 30rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee;
+}
+.container .ul .li .head text {
+  font-size: 24rpx;
+  color: #666;
+}
+.container .ul .li .head .right text {
+  margin-left: 20rpx;
+}
+.container .ul .li .order {
+  padding: 0 30rpx;
+  display: flex;
+  flex-direction: row;
+  height: 120rpx;
+  line-height: 120rpx;
+  align-items: center;
+}
+.container .ul .li .order:last-child .info {
+  border: none;
+}
+.container .ul .li .order .em {
+  width: 80rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-radius: 50%;
+  display: block;
+  background-color: #eee;
+  margin-right: 20rpx;
+}
+.container .ul .li .order .info {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  flex-grow: 1;
+  color: #333;
+  font-size: 28rpx;
+  border-bottom: 1px solid #eee;
+}

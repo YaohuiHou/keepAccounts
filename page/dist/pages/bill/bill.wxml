@@ -1,0 +1,26 @@
+
+  <view class="container">
+    <view class="userinfo" bindtap="handleViewTap">
+      <image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>
+      <view class="userinfo-nickname">{{ userInfo.nickName }}</view>
+    </view>
+
+    
+  <view class="panel">
+    <view class="title">测试数据绑定</view>
+    
+      
+
+      <text class="info">{{normalTitle}}</text>
+      <text class="info">{{setTimeoutTitle}}</text>
+      <text class="info">{{mixin}}</text>
+      <text class="info">{{mynum}}</text>
+      <text class="info">{{now}}</text>
+      <button bindtap="plus" size="mini" data-wpyplus-a="a">  +  </button>
+    
+  </view>
+
+
+    
+   
+  </view>

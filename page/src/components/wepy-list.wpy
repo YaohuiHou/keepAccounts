@@ -1,0 +1,66 @@
+<style lang="less">
+	.mylist {
+		display: flex;
+		align-items: center;
+		color: #333;
+		font-size: 14px;
+		padding: 5px;
+		line-height: 40px;
+		border-bottom: 1px solid #eee;
+		.itemtitle{
+			flex: 1;
+			padding-left: 5px;
+		}
+		&:after{
+			content:"箭";
+			font-family: "dogbooks";
+			display: block;
+		}
+	}
+   
+</style>
+<template>
+    <view class="wepy-list">
+        <block wx:for-items="{{list}}" wx:for-index="index" wx:for-item="item" wx:key="id">
+            <view @tap="tap" class="mylist">
+                <text class="family">{{item.id}}</text>
+                <text class="itemtitle">{{item.title}}</text>
+            </view>
+        </block>
+    </view>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class ListAnother extends wepy.component {
+    data = {
+    }
+    props = {
+      list:{
+        type:Array,
+        default:null
+      }
+    }
+
+    events = {
+      'index-broadcast': (...args) => {
+        let $event = args[args.length - 1]
+        console.log(`${this.$name} receive ${$event.name} from ${$event.source.name}`)
+      }
+    }
+    methods = {
+      tap () {
+        wx.showModal({
+            title: '提示',
+            content: '暂未开通此功能',
+            showCancel:false,
+            confirmText:'我知道了',
+            confirmColor:'#3ebba3'
+        })
+      }
+    }
+
+    onLoad () {
+    }
+  }
+</script>

@@ -1,0 +1,17 @@
+.panel {
+  width: 100%;
+  text-align: left;
+  font-size: 12px;
+  box-sizing: border-box;
+  padding: 20rpx 50rpx;
+}
+.panel .info {
+  padding: 15rpx;
+}
+.panel .testcounter {
+  margin-top: 15rpx;
+  position: absolute;
+}
+.panel .counterview {
+  margin-left: 120rpx;
+}

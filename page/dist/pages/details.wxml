@@ -1,0 +1,49 @@
+
+  <view class="container">
+    <view class="header">
+      <view class="timer">
+        <view class="date">
+          <text class="years">{{currenttime[0]}}年</text>
+          <picker mode="date" value="{{currenttime}}" bindchange="bindDateChange">
+              <text class="month">
+                <text>{{currenttime[1]}}</text>月
+              </text>
+          </picker>
+        </view>
+      </view>
+      <!-- 收支 -->
+      <view class="payments">
+        <view class="left">
+          <text class="title">收入</text>
+          <text class="price">{{listContent.income?'+'+listContent.income:0}}</text>
+        </view>
+        <view class="right">
+          <text class="title">支出</text>
+          <text class="price">{{listContent.pay?'-'+listContent.pay:0}}</text>
+        </view>
+      </view>
+    </view>
+    <!-- 列表 -->
+    <view class="ul">
+      <view class="li">
+        <block  wx:for-items="{{listContent.list}}" wx:for-index="index" wx:for-item="item" wx:key="id">
+        <view class="head">
+          <text>{{item.time}}</text>
+          <view class="right">
+            <text>收入：{{item.income?'+'+item.income:0}}</text>
+            <text>支出：{{item.pay?'-'+item.pay:0}}</text>
+          </view>
+        </view>
+         <block wx:for-items="{{item.list}}" wx:for-index="index" wx:for-item="ele" wx:key="id">
+          <view class="order">
+            <view class="em family">{{ele.val[0]}}</view>
+            <view class="info">
+              <text>{{ele.val}}</text>
+              <text>{{ele.type==0?'-'+ele.money:'+'+ele.money}}</text>
+            </view>
+          </view>
+         </block>
+        </block>
+      </view>
+    </view>
+  </view>
